@@ -3,8 +3,8 @@
 }
 
 #myImage {
-  width: 500px; /* Adjust width and height as needed */
-  height: 300px;
+  width: 1000px; /* Adjust width and height as needed */
+  height: 700px;
 }
 
 .highlightBox {
@@ -18,4 +18,36 @@
   border: 2px solid red;
   padding: 5px;
   cursor: pointer; /* Changes cursor to indicate interactivity */
+  opacity: 1; /* Initial opacity */
+  transition: opacity 0.2s ease-in-out; /* Smooth opacity transition */
+}
+
+.hintBox {
+  position: absolute; /* Positions the hint box relative to the highlighted box */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  color: #fff; /* White text */
+  padding: 5px;
+  font-size: 12px;
+  display: none; /* Initially hidden */
+  opacity: 0.8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  transition: display 0.2s ease-in-out; /* Smooth display transition */
+  pointer-events: none;
+}
+/* New class for hint box on hover effect */
+.hintBox:hover {
+  opacity: 1; /* Set full opacity on hover */
+}
+
+.cursorInfo {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  color: #fff; /* White text */
+  padding: 5px;
+  font-size: 12px;
+
+  opacity: 0.8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  transition: display 0.2s ease-in-out; /* Smooth display transition */
+  pointer-events: none;
 }
