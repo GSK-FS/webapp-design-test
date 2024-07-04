@@ -1,6 +1,10 @@
 .image-container {
   position: relative; /* Makes absolute positioning work */
 }
+.cursor-Values {
+  /* position: relative; */
+  display: flex;
+}
 
 #myImage {
   width: 1000px; /* Adjust width and height as needed */
@@ -40,9 +44,25 @@
 }
 
 .cursorInfo {
-  position: absolute;
+  /* position: absolute; */
+  width: 150px;
+  border-radius: 0px;
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
   color: #fff; /* White text */
+  padding: 5px;
+  font-size: 12px;
+
+  opacity: 0.8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  transition: display 0.2s ease-in-out; /* Smooth display transition */
+  pointer-events: none;
+}
+.cursorOffsetInfo {
+  /* position: absolute; */
+  width: 150px;
+  border-radius: 0px;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  color: #dfb037; /* White text */
   padding: 5px;
   font-size: 12px;
 
