@@ -11,6 +11,15 @@
   height: 700px;
 }
 
+@keyframes blinkBorder {
+  from {
+    border-color: blue;
+  }
+  to {
+    border-color: transparent;
+  }
+}
+
 .highlightBox {
   position: absolute; /* Positions the box on top of the image */
   background-color: rgba(
@@ -19,11 +28,15 @@
     0,
     0.3
   ); /* Semi-transparent yellow highlight */
-  border: 2px solid red;
+  border: 2px solid rgba(255, 0, 0, 1);
   padding: 5px;
   cursor: pointer; /* Changes cursor to indicate interactivity */
   opacity: 1; /* Initial opacity */
-  transition: opacity 0.2s ease-in-out; /* Smooth opacity transition */
+  transition: opacity 0.2s ease-in-out, border-color 5s; /* Smooth opacity transition */
+}
+.highlightBox.selected {
+  border-color: blue; /* Border color for selected box */
+  animation: blinkBorder 0.5s infinite; /* Animation for blinking border */
 }
 
 .hintBox {
@@ -63,6 +76,22 @@
   border-radius: 0px;
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
   color: #dfb037; /* White text */
+  padding: 5px;
+  font-size: 12px;
+
+  opacity: 0.8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  transition: display 0.2s ease-in-out; /* Smooth display transition */
+  pointer-events: none;
+}
+
+.elementInfo {
+  /* position: absolute; */
+  width: auto;
+  border-radius: 0px;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  color: #379cdf; /* White text */
+  text-shadow: 0 2px 5px #000000;
   padding: 5px;
   font-size: 12px;
 
