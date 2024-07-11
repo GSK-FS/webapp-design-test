@@ -100,3 +100,8 @@
   transition: display 0.2s ease-in-out; /* Smooth display transition */
   pointer-events: none;
 }
+.spacing-guide {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1000;
+}

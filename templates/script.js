@@ -39,14 +39,15 @@ function createBox(data) {
     hintBox.style.display = "none"; // Hide the hint box
   });
 
-  // Event listner click Selection
+  // Event listener for click selection
   box.addEventListener("click", () => {
     if (selectedBox === box) {
-      // Deselct "box" if already selected
+      // Deselect "box" if already selected
       updateSelectionLines(null);
       elementInfo.textContent = `(X: 0, Y: 0) - (Width: 0, Height: 0)`;
       box.classList.remove("selected");
       selectedBox = null;
+      clearSpacingGuides();
     } else {
       // Select "box" and deselect previously selected one
       if (selectedBox) {
@@ -56,6 +57,7 @@ function createBox(data) {
       selectedBox = box;
       elementInfo.textContent = `(X: ${data.x}, Y: ${data.y}) - (Width: ${data.width}, Height: ${data.height})`;
       updateSelectionLines(data);
+      showSpacingGuides(box, data);
     }
   });
 
@@ -69,15 +71,79 @@ function createBox(data) {
 }
 
 function updateSelectionLines(boxData) {
-  if (selectedBox) {
-    const selectedBoxElement = document.querySelector(".highlightBox.selected");
-    const containerWidth = image.clientWidth; // Get container width
-    const containerHeight = image.clientHeight; // Get container height
+  // Update selection lines or any additional details here
+}
+
+function clearSpacingGuides() {
+  const guides = document.querySelectorAll('.spacing-guide');
+  guides.forEach(guide => guide.remove());
+}
+
+function showSpacingGuides(selectedBox, selectedData) {
+  clearSpacingGuides(); // Clear existing guides
+  
+  const containerRect = boxesContainer.getBoundingClientRect();
+  const selectedRect = selectedBox.getBoundingClientRect();
+
+  const _h = 'horizontal'
+  const _v = 'vertical'
+  const _leading = 0
+  const _trailing = 0
+  const _top = 0
+  const _bottom = 0
+
+  // Create horizontal guides on the left and right sides of the selected box
+  createGuide(`${_h}`, selectedRect.top, selectedRect.right, containerRect.right - selectedRect.right);
+  createGuide(`${_h}`, selectedRect.bottom, containerRect.left, selectedRect.left - containerRect.left);
+  createGuide(`${_h}`, selectedRect.top, containerRect.left, selectedRect.left - containerRect.left);
+  createGuide(`${_h}`, selectedRect.bottom, selectedRect.right, containerRect.right - selectedRect.right);
+
+  // Create vertical guides on the top and bottom sides of the selected box
+  createGuide(`${_v}`, selectedRect.left, 0, selectedRect.top); //not showing
+  createGuide(`${_v}`, selectedRect.left, selectedRect.bottom, containerRect.bottom - selectedRect.bottom);
+  createGuide(`${_v}`, selectedRect.right, 0, selectedRect.top); //not showing
+  createGuide(`${_v}`, selectedRect.right, selectedRect.bottom, containerRect.bottom - selectedRect.bottom);
+
+  // createGuide('horizontal', selectedRect.top, containerRect.left, selectedRect.left - containerRect.left);
+  // createGuide('horizontal', selectedRect.top, selectedRect.right, containerRect.right - selectedRect.right);
+  // createGuide('horizontal', selectedRect.bottom, containerRect.left, selectedRect.left - containerRect.left);
+  // createGuide('horizontal', selectedRect.bottom, selectedRect.right, containerRect.right - selectedRect.right);
+
+  // createGuide('vertical', selectedRect.left, selectedData.y, selectedRect.top - containerRect.top); //not showing
+  // createGuide('vertical', selectedRect.left, selectedRect.bottom, containerRect.bottom - selectedRect.bottom);
+  // createGuide('vertical', selectedRect.right, containerRect.top, selectedRect.top - containerRect.top); //not showing
+  // createGuide('vertical', selectedRect.right, selectedRect.bottom, containerRect.bottom - selectedRect.bottom);
+  console.log("s------", selectedRect.left, "c------", containerRect.left, selectedData.x) // 458 ----- 8
+  console.log("s------", selectedRect.right, "------", containerRect.right, selectedData.width+selectedData.x) // 522 ----- 1912
+  console.log("s------", selectedRect.top, "------", containerRect.top, selectedData.y)      // 178 ----- 713.59
+  console.log("s------", selectedRect.bottom, "------", containerRect.bottom, selectedData.height+selectedData.y) // 222 ----- 713.59
+  console.log("s------", selectedRect.height,"------", containerRect.height) // 44 ------ 0
+  //{'x': 450, 'y': 170, 'width': 50, 'height': 30}
+}
+
+function createGuide(type, offset, start, length) {
+  const guide = document.createElement('div');
+  guide.classList.add('spacing-guide');
+
+  if (type === 'horizontal') {
+    guide.style.width = `${length}px`;
+    guide.style.left = `${start}px`;
+    guide.style.top = `${offset}px`;
+    guide.style.height = '1px';
+    guide.style.borderTop = '1px dashed #f90';
+  } else {
+    guide.style.height = `${length}px`;
+    guide.style.top = `${start}px`;
+    guide.style.left = `${offset}px`;
+    guide.style.width = '1px';
+    guide.style.borderLeft = '1px dashed #f90';
   }
+
+  boxesContainer.appendChild(guide); // Append guide to the container instead of body
 }
 
 function fetchBoxData() {
-  fetch("http://127.0.0.1:5000/a") // Replace with your actual server URL
+  fetch(`${baseURL}/a`) // Replace with your actual server URL
     .then((response) => response.json())
     .then((data) => {
       // Assuming data is an array of objects with x, y, width, height
