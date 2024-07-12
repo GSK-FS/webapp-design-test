@@ -28,8 +28,8 @@
     0,
     0.3
   ); /* Semi-transparent yellow highlight */
-  border: 2px solid rgba(255, 0, 0, 1);
-  padding: 5px;
+  border: 0px solid rgba(255, 0, 0, 1);
+  padding: 0px;
   cursor: pointer; /* Changes cursor to indicate interactivity */
   opacity: 1; /* Initial opacity */
   transition: opacity 0.2s ease-in-out, border-color 5s; /* Smooth opacity transition */
@@ -100,8 +100,81 @@
   transition: display 0.2s ease-in-out; /* Smooth display transition */
   pointer-events: none;
 }
+.y-axis-follower {
+  position: absolute; /* Positions the element absolutely */
+  top: 0; /* Initial position at top of the container */
+  left: 0%; /* Center the element horizontally */
+  transform: translateX(-0%); /* Adjust horizontal centering */
+  width: 10px; /* Line width */
+  height: 2px; /* Full height of the container */
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+  opacity: 0.5; /* Initial opacity */
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 1); /* Subtle shadow for depth */
+  transition: opacity 0.2s ease-in-out; /* Smooth opacity transition */
+  z-index: 2; /* Ensure the follower stays above other elements */
+}
+
+.x-axis-follower {
+  position: absolute; /* Positions the element absolutely */
+  top: 0; /* Initial position at top of the container */
+  left: 0%; /* Center the element horizontally */
+  transform: translateY(-0%); /* Adjust horizontal centering */
+  width: 2px; /* Line width */
+  height: 10px; /* Full height of the container */
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+  opacity: 0.5; /* Initial opacity */
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 1); /* Subtle shadow for depth */
+  transition: opacity 0.2s ease-in-out; /* Smooth opacity transition */
+  z-index: 2; /* Ensure the follower stays above other elements */
+}
+
+.x-leading-guider {
+  position: absolute; /* Positions the element absolutely */
+  top: 0; /* Initial position at top of the container */
+  left: 1%; /* Center the element horizontally */
+  transform: translateX(-0%); /* Adjust horizontal centering */
+  width: 2px; /* Line width */
+  height: 0px; /* Full height of the container */
+  background-color: rgba(255, 0, 0, 0.7); /* Semi-transparent black */
+  opacity: 0.5; /* Initial opacity */
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 1); /* Subtle shadow for depth */
+  transition: opacity 0.2s ease-in-out; /* Smooth opacity transition */
+  z-index: 2; /* Ensure the follower stays above other elements */
+}
+
+.left-selection-line {
+  position: absolute; /* Positions the line absolutely */
+  top: 50%; /* Center the line vertically relative to the box */
+  left: 0; /* Start at the left edge of the image */
+  width: 2px; /* Line width */
+  height: 0; /* Initial height (will be updated dynamically) */
+  background-color: blue; /* Match border color */
+  opacity: 1; /* Full opacity */
+  transition: height 0.2s ease-in-out; /* Transition for line height */
+  z-index: 1; /* Ensure the line stays below the box and follower */
+}
+.left-selection-line.selected {
+  border-color: blue; /* Border color for selected box */
+  animation: blinkBorder 0.5s infinite; /* Animation for blinking border */
+}
+
+
 .spacing-guide {
   position: absolute;
   pointer-events: none;
   z-index: 1000;
+}
+
+.spacing-guide-top,
+.spacing-guide-bottom {
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.spacing-guide-left,
+.spacing-guide-right {
+  width: 20px;
+  writing-mode: vertical-lr;
+  text-align: center;
 }

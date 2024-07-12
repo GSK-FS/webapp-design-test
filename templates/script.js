@@ -7,6 +7,16 @@ const elementInfo = document.getElementById("element-Info");
 const cursorOffsetInfo = document.getElementById("cursorOffset-Info");
 let selectedBox = null; // Variable to track the currently selected box
 
+
+
+const yAxisFollower = document.createElement("div"); // Create the follower element
+yAxisFollower.classList.add("y-axis-follower"); // Add the styling class
+document.body.appendChild(yAxisFollower); // Append the follower to the body (adjust if needed)
+const xAxisFollower = document.createElement("div"); // Create the follower element
+xAxisFollower.classList.add("x-axis-follower"); // Add the styling class
+document.body.appendChild(xAxisFollower); // Append the follower to the body (adjust if needed)
+
+
 function createBox(data) {
   // Create a new box element
   const box = document.createElement("div");
@@ -85,17 +95,21 @@ function showSpacingGuides(selectedBox, selectedData) {
   const containerRect = boxesContainer.getBoundingClientRect();
   const selectedRect = selectedBox.getBoundingClientRect();
 
-  const _h = 'horizontal'
-  const _v = 'vertical'
-  const _leading = 0
-  const _trailing = 0
-  const _top = 0
-  const _bottom = 0
+  const margTop = image.getBoundingClientRect().top;
+  const margLeft = image.getBoundingClientRect().left;
+
+  const _h = 'horizontal';
+  const _v = 'vertical';
+  const _leading = selectedData.x; // 0;
+  const _trailing = selectedData.width + selectedData.x; // 0;
+  const _top = selectedData.y; // 0;
+  const _bottom =  selectedData.height + selectedData.y;// 0;
 
   // Create horizontal guides on the left and right sides of the selected box
+  //  (type, offset, start, length)
+  createGuide(`${_h}`, selectedRect.top, 0, selectedRect.left - containerRect.left);
   createGuide(`${_h}`, selectedRect.top, selectedRect.right, containerRect.right - selectedRect.right);
-  createGuide(`${_h}`, selectedRect.bottom, containerRect.left, selectedRect.left - containerRect.left);
-  createGuide(`${_h}`, selectedRect.top, containerRect.left, selectedRect.left - containerRect.left);
+  createGuide(`${_h}`, selectedRect.bottom, 0, selectedRect.left - containerRect.left);
   createGuide(`${_h}`, selectedRect.bottom, selectedRect.right, containerRect.right - selectedRect.right);
 
   // Create vertical guides on the top and bottom sides of the selected box
@@ -156,3 +170,28 @@ function fetchBoxData() {
 
 // Fetch box data on page load or button click (adjust as needed)
 fetchBoxData();
+
+
+
+
+document.addEventListener("mousemove", (event) => {
+  // Update cursor info (unchanged)
+  // ...
+
+  const margTop = image.getBoundingClientRect().top;
+  const margLeft = image.getBoundingClientRect().left;
+  // const margRight = image.getBoundingClientRect().right;
+  // const margBottom = image.getBoundingClientRect().bottom;
+
+  // Update Y-axis follower position
+  const containerHeight = image.clientHeight + image.getBoundingClientRect().top;
+  const relativeY = event.clientY; // - image.getBoundingClientRect().top; // Get relative Y position within the container
+  const followerPositionY = Math.min(containerHeight + 0, Math.max(margTop, relativeY)); // Clamp the follower position within container bounds
+  yAxisFollower.style.top = `${followerPositionY}px`;
+
+  // Update Y-axis follower position
+  const containerWidth = image.clientWidth + image.getBoundingClientRect().left;
+  const relativeX = event.clientX; //- image.getBoundingClientRect().left; // Get relative Y position within the container
+  const followerPositionX = Math.min(containerWidth + 0, Math.max(margLeft, relativeX)); // Clamp the follower position within container bounds
+  xAxisFollower.style.left = `${followerPositionX}px`;
+});
